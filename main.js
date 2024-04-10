@@ -5,7 +5,7 @@ const app = express();
 app.use(express.static("public"));
 // require("dotenv").config();
 
-const serverPort = 443;
+const serverPort = process.env.PORT || 3000;
 const server = https.createServer(app);
 const WebSocket = require("ws");
 
