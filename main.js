@@ -1,4 +1,4 @@
-const http = require("http");
+const https = require("https");
 const express = require("express");
 const app = express();
 
@@ -6,7 +6,7 @@ app.use(express.static("public"));
 // require("dotenv").config();
 
 const serverPort = 443;
-const server = http.createServer(app);
+const server = https.createServer(app);
 const WebSocket = require("ws");
 
 let keepAliveId;
