@@ -10,6 +10,8 @@ const server = http.createServer(app);
 const WebSocket = require("ws");
 
 let keepAliveId;
+var DRONES = [];
+var CESIUM_APPS = [];
 
 const wss =
   process.env.NODE_ENV === "production"
@@ -26,14 +28,17 @@ wss.getUniqueID = function () {
 };
 wss.on("connection", function (ws, req) {
   const params = new URLSearchParams(req.url.split('?')[1]);
-  const clienttype = params.get('clienttype');
-  const clientid = params.get('clientid');
+  const client_type = params.get('client_type');
+  const client_id = params.get('client_id');
   ws.id = wss.getUniqueID();
+  ws.client_id = client_id;
+  if(client_type == "DRONE")
+    DRONES.push(ws);
+  else if(client_type == "CESIUM_APP")
+    CESIUM_APPS.push(ws);
   console.log("Connection Opened");
-  console.log("Client size: ", wss.clients.size + ", Current token id: " + ws.id + ", Current client id: " +  clientid + ", Current client type: " +  clienttype);
-    wss.clients.forEach(function each(client) {
-        console.log('Client.ID: ' + client.id);
-    });
+  console.log("Client size: ", wss.clients.size + ", Current token id: " + ws.id + ", Current client id: " +  client_id + ", Current client type: " +  client_type);
+
   if (wss.clients.size === 1) {
     console.log("first connection. starting keepalive");
     keepServerAlive();
