@@ -56,7 +56,20 @@ wss.on("connection", function (ws, req) {
 
   ws.on("close", (data) => {
     console.log("closing connection for client with client id:" + ws.id + ", and type:" + ws.client_type);
-
+    console.log('DRONES LENGTH: ' + DRONES.length + ', CESIUM_APPS LENGTH: ' + CESIUM_APPS.length);
+    if(ws.client_type == "DRONE"){
+      let index = DRONES.findIndex(w => w.id === ws.id);
+      if (index !== -1) {
+        DRONES.splice(index, 1);
+      }
+    }
+    else if(ws.client_type == "CESIUM_APP"){
+      let index = CESIUM_APPS.findIndex(w => w.id === ws.id);
+      if (index !== -1) {
+        CESIUM_APPS.splice(index, 1);
+      }
+    }
+      
     if (wss.clients.size === 0) {
       console.log("last client disconnected, stopping keepAlive interval");
       clearInterval(keepAliveId);
