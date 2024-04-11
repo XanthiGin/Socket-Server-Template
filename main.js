@@ -54,7 +54,10 @@ wss.on("connection", function (ws, req) {
   });
 
   ws.on("close", (data) => {
-    console.log("closing connection for client with id:" + this.id);
+    wss.clients.forEach(function each(client) {
+        console.log('Client.ID: ' + client.readyState);
+    });
+    console.log("closing connection");
 
     if (wss.clients.size === 0) {
       console.log("last client disconnected, stopping keepAlive interval");
