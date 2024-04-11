@@ -69,7 +69,7 @@ wss.on("connection", function (ws, req) {
         CESIUM_APPS.splice(index, 1);
       }
     }
-      
+         console.log('DRONES LENGTH: ' + DRONES.length + ', CESIUM_APPS LENGTH: ' + CESIUM_APPS.length); 
     if (wss.clients.size === 0) {
       console.log("last client disconnected, stopping keepAlive interval");
       clearInterval(keepAliveId);
