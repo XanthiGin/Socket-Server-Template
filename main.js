@@ -32,6 +32,7 @@ wss.on("connection", function (ws, req) {
   const client_id = params.get('client_id');
   ws.id = wss.getUniqueID();
   ws.client_id = client_id;
+  ws.client_type = client_type;
   if(client_type == "DRONE")
     DRONES.push(ws);
   else if(client_type == "CESIUM_APP")
@@ -54,10 +55,7 @@ wss.on("connection", function (ws, req) {
   });
 
   ws.on("close", (data) => {
-    wss.clients.forEach(function each(client) {
-        console.log('Client.ID: ' + client.readyState);
-    });
-    console.log("closing connection");
+    console.log("closing connection for client with client id:" + ws.id + ", and type:" + ws.client_type);
 
     if (wss.clients.size === 0) {
       console.log("last client disconnected, stopping keepAlive interval");
